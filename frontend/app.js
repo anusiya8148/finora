@@ -12,7 +12,7 @@ const state = {
   floatingOpen: false,
   route: location.hash.replace("#", "") || "dashboard",
 };
-
+const API_BASE_URL = "https://finora-1-gwql.onrender.com";
 const money = (n) => `₹${Number(n || 0).toLocaleString("en-IN", {maximumFractionDigits: 0})}`;
 const esc = (s="") => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 const initials = (name="U") => name.split(/\s+/).map(x => x[0]).slice(0,2).join("").toUpperCase();
@@ -28,7 +28,7 @@ function toast(message, type="info"){
 async function api(url, options={}){
   const headers = {"Content-Type":"application/json", ...(options.headers||{})};
   if(state.token) headers.Authorization = `Bearer ${state.token}`;
-  const res = await fetch(url, {...options, headers});
+  const res = await fetch(`${API_BASE_URL}${url}`, {...options, headers});
   let data = {};
   try { data = await res.json(); } catch {}
   if(res.status === 401){
